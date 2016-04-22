@@ -13,7 +13,7 @@ public class Field {
     private int width;
     private int height;
 
-    private int[][] field;
+    private PointInterface[][] field;
 
     private int peak = 0;
 
@@ -21,11 +21,11 @@ public class Field {
         width = scanner.nextInt();
         height = scanner.nextInt();
 
-        field = new int[height][width];
+        field = new PointInterface[height][width];
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
-                field[y][x] = scanner.nextInt();
+                field[y][x] = new Point(x,y, scanner.nextInt(), this);
             }
         }
     }
@@ -45,7 +45,7 @@ public class Field {
 
     public PointInterface getPoint(int x, int y)
     {
-        return new Point(x, y, field[y][x], this);
+        return field[y][x];
     }
 
     public void print(PrintStream out) {
@@ -58,7 +58,7 @@ public class Field {
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
-                out.print(String.format("%"+maxlength+"d", field[y][x]));
+                out.print(String.format("%"+maxlength+"d", field[y][x].getHeight()));
                 out.print(' ');
             }
             out.println();
