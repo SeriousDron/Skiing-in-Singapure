@@ -9,8 +9,10 @@ public class MaxPath {
 
     private static Field field;
 
-    private int bestPathLen = 0;
-    private int bestPathSlope = 0;
+    private static int pathChecked = 0;
+
+    private static Path bestPath = null;
+    private static Set<PointInterface> endPoints;
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -20,35 +22,48 @@ public class MaxPath {
 
         field.print(System.out);
 
-        List<PointInterface> endPoints = solver.findEndPoints();
+        endPoints = solver.findEndPoints();
+        System.out.println(endPoints);
 
-        System.out.println(endPoints);
-        Collections.sort(endPoints);
-        System.out.println(endPoints);
 
         List<PointInterface> startPoints = solver.findStartPoints();
         Collections.sort(startPoints, Collections.reverseOrder());
-        System.out.println(startPoints);
 
+        for (PointInterface startPoint: startPoints) {
+            if (solver.bestPath != null && startPoint.getHeight() < bestPath.getSlope()) {
+                continue;
+            }
+            Path path = new Path();
+            solver.findPath(path, startPoint);
+        }
 
+        System.out.println(String.format("Checked %d paths", pathChecked));
+        System.out.println(bestPath);
     }
 
+    private void findPath(Path path, PointInterface point) {
+        path.addWaypoint(point);
 
+        if (point.getSlopes().size() == 0) { //No ways
+            //System.out.println(path);
+            pathChecked++;
+            if (bestPath == null || path.compareTo(bestPath) > 0) {
+                bestPath = path;
+                return ;
+            }
+        }
 
-    private void processBranch(Point endpoint, int pathLen) {
-     /*   pathLen++;
-        ArrayList<Point> neighbors = getNeighbors(endpoint);
-        if (neighbors.size() == 0) {
-            
-        }*/
+        for(PointInterface nextPoint: point.getSlopes()) {
+            findPath(new Path(path), nextPoint);
+        }
     }
 
     private List<PointInterface> findStartPoints() {
         return field.stream().filter(PointInterface::isPeak).collect(Collectors.toList());
     }
 
-    private List<PointInterface> findEndPoints() {
-        return field.stream().filter(point -> point.getSlopes().size() == 0).collect(Collectors.toList());
+    private Set<PointInterface> findEndPoints() {
+        return field.stream().filter(point -> point.getSlopes().size() == 0).collect(Collectors.toSet());
     }
 
     private void loadInput() throws FileNotFoundException {

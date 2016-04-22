@@ -50,7 +50,7 @@ public class Point implements PointInterface {
     public List<PointInterface> getSlopes() {
 
         if (slopes == null) {
-            slopes = Collections.unmodifiableList(getNeighbours().stream().filter(PointInterface::isPeak).collect(Collectors.toList()));
+            slopes = Collections.unmodifiableList(getNeighbours().stream().filter(point -> this.compareTo(point) > 0).collect(Collectors.toList()));
         }
 
         return slopes;
