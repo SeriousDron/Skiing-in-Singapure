@@ -5,14 +5,13 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MaxPath {
+class MaxPath {
 
-    private static Field field;
+    private Field field;
 
-    private static int pathChecked = 0;
+    private int pathChecked = 0;
 
-    private static Path bestPath = null;
-    private static Set<PointInterface> endPoints;
+    private Path bestPath = null;
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -20,21 +19,21 @@ public class MaxPath {
 
         solver.loadInput();
 
-        field.print(System.out);
+        solver.field.print(System.out);
 
-        endPoints = solver.findEndPoints();
-        System.out.println(endPoints);
+        solver.solve();
+    }
 
-
-        List<PointInterface> startPoints = solver.findStartPoints();
+    private void solve() {
+        List<PointInterface> startPoints = findStartPoints();
         Collections.sort(startPoints, Collections.reverseOrder());
 
         for (PointInterface startPoint: startPoints) {
-            if (solver.bestPath != null && startPoint.getHeight() < bestPath.getSlope()) {
+            if (bestPath != null && startPoint.getHeight() < bestPath.getSlope()) {
                 continue;
             }
             Path path = new Path();
-            solver.findPath(path, startPoint);
+            findPath(path, startPoint);
         }
 
         System.out.println(String.format("Checked %d paths", pathChecked));
@@ -42,7 +41,7 @@ public class MaxPath {
     }
 
     private void findPath(Path path, PointInterface point) {
-        path.addWaypoint(point);
+        path.addWayPoint(point);
 
         if (point.getSlopes().size() == 0) { //No ways
             //System.out.println(path);
@@ -60,10 +59,6 @@ public class MaxPath {
 
     private List<PointInterface> findStartPoints() {
         return field.stream().filter(PointInterface::isPeak).collect(Collectors.toList());
-    }
-
-    private Set<PointInterface> findEndPoints() {
-        return field.stream().filter(point -> point.getSlopes().size() == 0).collect(Collectors.toSet());
     }
 
     private void loadInput() throws FileNotFoundException {

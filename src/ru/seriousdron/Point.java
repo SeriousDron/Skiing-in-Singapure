@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
  */
 public class Point implements PointInterface {
 
-    private int x;
-    private int y;
-    private int height;
+    private final int x;
+    private final int y;
+    private final int height;
 
     private final Field field;
 

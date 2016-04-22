@@ -6,32 +6,32 @@ import java.util.List;
 /**
  * @author Andrey Petrenko
  */
-public class Path implements Comparable<Path> {
+class Path implements Comparable<Path> {
 
-    List<PointInterface> waypoints;
+    private final List<PointInterface> wayPoints;
 
     public Path() {
-        waypoints = new ArrayList<>();
+        wayPoints = new ArrayList<>();
     }
 
     public Path(Path other) {
-        waypoints = new ArrayList<>(other.waypoints);
+        wayPoints = new ArrayList<>(other.wayPoints);
     }
 
-    public void addWaypoint(PointInterface point) {
+    public void addWayPoint(PointInterface point) {
 
-        waypoints.add(point);
+        wayPoints.add(point);
     }
 
     public int getLength() {
-        return  waypoints.size();
+        return  wayPoints.size();
     }
 
     public int getSlope() {
-        if (waypoints.size() == 0) {
+        if (wayPoints.size() == 0) {
             return 0;
         }
-        return waypoints.get(0).getHeight() - waypoints.get(waypoints.size() - 1).getHeight();
+        return wayPoints.get(0).getHeight() - wayPoints.get(wayPoints.size() - 1).getHeight();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Path implements Comparable<Path> {
     @Override
     public String toString() {
         return "Path{" +
-                "waypoints=" + waypoints +
+                "wayPoints=" + wayPoints +
                 '}';
     }
 }

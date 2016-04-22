@@ -8,12 +8,12 @@ import java.util.stream.Stream;
 /**
  * @author Andrey Petrenko
  */
-public class Field {
+class Field {
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
-    private PointInterface[][] field;
+    private final PointInterface[][] field;
 
     private int peak = 0;
 
@@ -54,11 +54,11 @@ public class Field {
             peak = stream().max(PointInterface::compareTo).get().getHeight();
         }
 
-        int maxlength = String.valueOf(peak).length();
+        int maxLength = String.valueOf(peak).length();
 
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
-                out.print(String.format("%"+maxlength+"d", field[y][x].getHeight()));
+                out.print(String.format("%"+maxLength+"d", field[y][x].getHeight()));
                 out.print(' ');
             }
             out.println();
