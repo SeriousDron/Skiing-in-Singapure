@@ -14,6 +14,8 @@ public class Point implements PointInterface {
     private final int y;
     private final int height;
 
+    private Path longestPath = null;
+
     private final Field field;
 
     private List<PointInterface> neighbours;
@@ -76,7 +78,20 @@ public class Point implements PointInterface {
     }
 
     @Override
+    public boolean isEnd() {
+        return getSlopes().size() == 0;
+    }
+
+    @Override
     public int compareTo(PointInterface o) {
         return getHeight() - o.getHeight();
+    }
+
+    public Path getLongestPath() {
+        return longestPath;
+    }
+
+    public void setLongestPath(Path longestPath) {
+        this.longestPath = longestPath;
     }
 }

@@ -12,4 +12,8 @@ public interface PointInterface extends Comparable<PointInterface> {
     int getHeight();
 
     boolean isPeak();
+    boolean isEnd();
+
+    Path getLongestPath();
+    void setLongestPath(Path length);
 }

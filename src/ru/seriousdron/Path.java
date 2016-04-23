@@ -14,8 +14,19 @@ class Path implements Comparable<Path> {
         wayPoints = new ArrayList<>();
     }
 
+    public Path(PointInterface point) {
+        wayPoints = new ArrayList<>(1);
+        wayPoints.add(point);
+    }
+
     public Path(Path other) {
         wayPoints = new ArrayList<>(other.wayPoints);
+    }
+
+    public Path(PointInterface from, Path bestSubPath) {
+        wayPoints = new ArrayList<>(bestSubPath.getLength()+1);
+        wayPoints.add(from);
+        wayPoints.addAll(bestSubPath.wayPoints);
     }
 
     public void addWayPoint(PointInterface point) {
@@ -31,7 +42,8 @@ class Path implements Comparable<Path> {
         if (wayPoints.size() == 0) {
             return 0;
         }
-        return wayPoints.get(0).getHeight() - wayPoints.get(wayPoints.size() - 1).getHeight();
+        //noinspection ConstantConditions
+        return wayPoints.get(0).getHeight() - getLastPoint().getHeight();
     }
 
     @Override
@@ -48,4 +60,20 @@ class Path implements Comparable<Path> {
                 "wayPoints=" + wayPoints +
                 '}';
     }
+
+    public boolean isComplete() {
+        if (wayPoints.size() == 0) {
+            return false;
+        }
+        //noinspection ConstantConditions
+        return getLastPoint().isEnd();
+    }
+
+    private PointInterface getLastPoint() {
+        if (wayPoints.size() == 0) {
+            return null;
+        }
+        return wayPoints.get(wayPoints.size() - 1);
+    }
+
 }
